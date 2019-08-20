@@ -34,12 +34,12 @@ class Index {
 
     replaceChain(newChain) {
         if (newChain.length <= this.chain.length) {
-            console.log('Not longer than the current chain');
+            console.warn('Not longer than the current chain');
             return;
         }
 
         if (!this.isValidChain(newChain)) {
-            console.log('New chain is not valid');
+            console.warn('New chain is not valid');
             return;
         }
 
