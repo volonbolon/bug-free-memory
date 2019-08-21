@@ -38,6 +38,13 @@ app.post('/transact', (req, res) => {
     res.json(pool.transactions);
 });
 
+app.get('/public-key', (req, res) => {
+    const payload = {
+        publicKey: wallet.publicKey
+    };
+    res.json(payload);
+});
+
 app.listen(HTTP_PORT, () => {
     console.log(`Listening on port ${HTTP_PORT}`);
 });
