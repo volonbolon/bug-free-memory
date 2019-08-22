@@ -28,6 +28,12 @@ describe('Transaction Pool', () => {
         expect(JSON.stringify(pooledTransaction)).not.toEqual(dehydratedTransaction);
     });
 
+    it('clears transactions', () => {
+        pool.clear();
+
+        expect(pool.transactions.length).toEqual(0);
+    });
+
     describe('mixing valid and corrupt transactions', () => {
         let validTransactions;
 
