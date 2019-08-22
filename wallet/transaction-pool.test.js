@@ -55,8 +55,7 @@ describe('Transaction Pool', () => {
         it('grabs valid transactions', () => {
             const validFromPool = JSON.stringify(pool.validTransactions());
             const valid = JSON.stringify(validTransactions);
-            console.log(validFromPool);
-            // expect(validFromPool).toEqual(valid);
+            expect(validFromPool).toEqual(valid);
         });
     });
 });
