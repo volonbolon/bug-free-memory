@@ -1,10 +1,12 @@
+const Transaction = require('./transaction');
+
 class TransactionPool {
     constructor() {
         this.transactions = [];
     }
 
     updateOrAddTransaction(transaction) {
-        let transactionWithId = this.transactions.find(transaction => transaction.id === transaction.id);
+        let transactionWithId = this.transactions.find(t => t.id === transaction.id);
         if (transactionWithId) {
             const referenceIndex = this.transactions.indexOf(transactionWithId);
             this.transactions[referenceIndex] = transaction;
@@ -22,9 +24,11 @@ class TransactionPool {
             const outputTotal = t.outputs.reduce((total, o) => {
                 return total + o.amount;
             }, 0);
+
             const inputAmount = t.input.amount;
-            if (inputAmount < outputTotal) {
-                console.error(`Invalid transaction. Input ${inputAmount} is lower than total outputs ${outputTotal}`);
+
+            if (inputAmount !== outputTotal) {
+                console.error(`Invalid transaction. Input ${inputAmount} dos not match total outputs ${outputTotal}`);
                 return;
             }
 
