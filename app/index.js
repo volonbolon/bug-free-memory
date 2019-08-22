@@ -4,6 +4,7 @@ const Blockchain = require('../blockchain');
 const P2PServer = require('./p2p-server');
 const Wallet = require('../wallet');
 const TransactionPool = require('../wallet/transaction-pool');
+const Miner = require('./miner');
 
 const HTTP_PORT = process.env.HTTP_PORT || 3001;
 
@@ -12,6 +13,7 @@ const blockchain = new Blockchain();
 const wallet = new Wallet();
 const pool = new TransactionPool();
 const p2pServer = new P2PServer(blockchain, pool);
+const miner = new Miner(blockchain, pool, wallet, p2pServer);
 
 app.use(bodyParser.json());
 
@@ -25,13 +27,19 @@ app.post('/mine', (req, res) => {
     res.json(blockchain.chain);
 });
 
+app.get('/mine-transactions', (req, res) => {
+    const block = miner.mine();
+
+    res.json(blockchain.chain);
+});
+
 app.get('/transactions', (req, res) => {
     res.json(pool.transactions);
 });
 
 app.post('/transact', (req, res) => {
     const {recipient, amount} = req.body;
-    const transaction = wallet.createTransaction(recipient, amount, pool);
+    const transaction = wallet.createTransaction(recipient, amount, blockchain, pool);
 
     p2pServer.broadcastTransaction(transaction);
 
